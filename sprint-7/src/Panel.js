@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import CustomInput from './CustomInput';
 
 const PanelContainer = styled.div`
   display: ${props => props.visible ? 'block' : 'none'};
@@ -13,13 +14,14 @@ const Panel = ({ visible, numPaginas, numIdiomas, onNumPaginasChange, onNumIdiom
       <PanelContainer visible={visible}>
         <label>
           Número de páginas:
-          <input type="number" value={numPaginas} onChange={e => onNumPaginasChange(e.target.value)} />
+          <CustomInput value={numPaginas} onChange={onNumPaginasChange} />
         </label>
         <label>
           Número de idiomas:
-          <input type="number" value={numIdiomas} onChange={e => onNumIdiomasChange(e.target.value)} />
+          <CustomInput value={numIdiomas} onChange={onNumIdiomasChange} />
         </label>
       </PanelContainer>
     );
   };
+
 export default Panel;

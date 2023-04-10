@@ -25,23 +25,42 @@ function App() {
   const modificarPrecioWeb = () => {
     setPrecioWeb(precioWeb === 500 ? 0 : 500);
     setPanelVisible(!panelVisible);
-  }
-
+    guardarEstadoEnLocalStorage();
+  };
+  
   const modificarPrecioSEO = () => {
-    if (precioSEO === 250) {
-      setPrecioSEO(0);
-    } else {
-      setPrecioSEO(250);
-    }
-  }
-
+    setPrecioSEO(precioSEO === 250 ? 0 : 250);
+    guardarEstadoEnLocalStorage();
+  };
+  
   const modificarPrecioAds = () => {
-    if (precioAds === 200) {
-      setPrecioAds(0);
-    } else {
-      setPrecioAds(200);
-    }
-  }
+    setPrecioAds(precioAds === 200 ? 0 : 200);
+    guardarEstadoEnLocalStorage();
+  };
+  
+  // También debes modificar las funciones de cambio en el componente Panel
+  const handleNumPaginasChange = (value) => {
+    setNumPaginas(value);
+    guardarEstadoEnLocalStorage();
+  };
+  
+  const handleNumIdiomasChange = (value) => {
+    setNumIdiomas(value);
+    guardarEstadoEnLocalStorage();
+  };
+
+  const guardarEstadoEnLocalStorage = () => {
+    const estado = {
+      precioWeb,
+      precioSEO,
+      precioAds,
+      panelVisible,
+      numPaginas,
+      numIdiomas,
+    };
+    localStorage.setItem('estado', JSON.stringify(estado));
+  };
+  
 
   
 
@@ -50,6 +69,18 @@ function App() {
     calcularPrecioTotal();// Llamamos a la función para calcular el coste de la página web
   }, [precioWeb, precioSEO, precioAds, panelVisible, numPaginas, numIdiomas]);
   
+  React.useEffect(() => {
+    const estadoGuardado = localStorage.getItem('estado');
+    if (estadoGuardado) {
+      const estado = JSON.parse(estadoGuardado);
+      setPrecioWeb(estado.precioWeb);
+      setPrecioSEO(estado.precioSEO);
+      setPrecioAds(estado.precioAds);
+      setPanelVisible(estado.panelVisible);
+      setNumPaginas(estado.numPaginas);
+      setNumIdiomas(estado.numIdiomas);
+    }
+  }, []);
   
 
   return (
@@ -61,12 +92,13 @@ function App() {
           <input type="checkbox" checked={panelVisible} onChange={() => setPanelVisible(!panelVisible)}  /> Página web (500€)
         </label>
         <Panel
-          visible={panelVisible}
-          numPaginas={numPaginas}
-          numIdiomas={numIdiomas}
-          onNumPaginasChange={setNumPaginas}
-          onNumIdiomasChange={setNumIdiomas}
-        />
+  visible={panelVisible}
+  numPaginas={numPaginas}
+  numIdiomas={numIdiomas}
+  onNumPaginasChange={handleNumPaginasChange}
+  onNumIdiomasChange={handleNumIdiomasChange}
+/>
+
         <label>
           <input type="checkbox" checked={precioSEO === 250} onChange={modificarPrecioSEO} /> Consultoría SEO (250€)
         </label>
