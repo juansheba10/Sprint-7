@@ -24,10 +24,11 @@ const Calculadora = () =>  {
     }
   
     const modificarPrecioWeb = () => {
-      setPrecioWeb(precioWeb === 500 ? 0 : 0);
+      setPrecioWeb(precioWeb === 500 ? 0 : 500);
       setPanelVisible(!panelVisible);
       guardarEstadoEnLocalStorage();
     };
+    
     
     const modificarPrecioSEO = () => {
       setPrecioSEO(precioSEO === 250 ? 0 : 250);
