@@ -107,11 +107,20 @@ const Calculadora = () =>  {
       const updatedBudgetList = [...budgetList, newBudget];
       setBudgetList(updatedBudgetList);
       localStorage.setItem('budgetList', JSON.stringify(updatedBudgetList));
-      setBudgetName('');
-      setClientName('');
     };
+
+    useEffect(() => {
+      const storedBudgets = localStorage.getItem('budgetList');
+      const originalBudgets = storedBudgets
+        ? JSON.parse(storedBudgets).map((budget) => ({
+            ...budget,
+            date: new Date(budget.date),
+          }))
+        : [];
+      setBudgetList(originalBudgets);
+    }, []);
     
-    
+
     const calcularPrecioTotal = () => {
       let costeWeb = 0; // Coste base de la página web
       if (panelVisible) {
