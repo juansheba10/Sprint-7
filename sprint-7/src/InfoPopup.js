@@ -3,9 +3,18 @@ import styled from 'styled-components';
 
 const InfoButton = styled.button`
   margin-left: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
 `;
 
 const PopupContainer = styled.div`
@@ -36,7 +45,7 @@ const InfoPopup = ({ message }) => {
 
   return (
     <div>
-      <InfoButton onClick={togglePopup}>Mostrar información</InfoButton>
+      <InfoButton onClick={togglePopup}>i</InfoButton>
       {popupVisible && (
         <PopupContainer onClick={togglePopup}>
           <PopupContent>

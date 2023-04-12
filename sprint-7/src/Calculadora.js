@@ -101,15 +101,12 @@ const Calculadora = () =>  {
     onNumPaginasChange={handleNumPaginasChange}
     onNumIdiomasChange={handleNumIdiomasChange}
   />
-  <InfoPopup message="En este componente debe indicar cuántas páginas tendrá su web." />
-    <InfoPopup message="En este componente debe indicar cuántos idiomas tendrá su web." />
           <label>
             <input type="checkbox" checked={precioSEO === 250} onChange={modificarPrecioSEO} /> Consultoría SEO (250€)
           </label>
           <label>
             <input type="checkbox" checked={precioAds === 200} onChange={modificarPrecioAds} /> Campaña de Google Ads (200€)
           </label>
-          <InfoPopup numPaginas={numPaginas} />
       </div>
     );
   }

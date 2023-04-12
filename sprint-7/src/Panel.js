@@ -10,21 +10,32 @@ const PanelContainer = styled.div`
   border: 1px solid #ccc;
 `;
 
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 const Panel = ({ visible, numPaginas, numIdiomas, onNumPaginasChange, onNumIdiomasChange }) => {
     return (
       <PanelContainer visible={visible}>
-        <label>
-          Número de páginas:
-          <CustomInput value={numPaginas} onChange={onNumPaginasChange} />
+        <InputWrapper>
+          <label>
+            Número de páginas:
+            <CustomInput value={numPaginas} onChange={onNumPaginasChange} />
+          </label>
           <InfoPopup message="En este componente debe indicar cuántas páginas tendrá su web." />
-        </label>
-        <label>
-          Número de idiomas:
-          <CustomInput value={numIdiomas} onChange={onNumIdiomasChange} />
+        </InputWrapper>
+        <InputWrapper>
+          <label>
+            Número de idiomas:
+            <CustomInput value={numIdiomas} onChange={onNumIdiomasChange} />
+          </label>
           <InfoPopup message="En este componente debe indicar cuántos idiomas tendrá su web." />
-        </label>
+        </InputWrapper>
       </PanelContainer>
     );
   };
 
 export default Panel;
+
