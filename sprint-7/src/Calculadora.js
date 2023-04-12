@@ -21,6 +21,54 @@ const PresupuestosContainer = styled.div`
   flex: 1;
 `;
 
+const PrecioTotal = styled.p`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
+const CheckboxContainer = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const InputContainer = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const AddBudgetButton = styled.button`
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
+const SortButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 1rem;
+
+  &:hover {
+    background-color: #0069d9;
+  }
+`;
+
+const SearchContainer = styled.div`
+  margin-bottom: 1rem;
+`;
+
 const PresupuestoItem = styled.div`
   padding: 1rem;
   border: 1px solid #ccc;
@@ -41,6 +89,7 @@ const Calculadora = () =>  {
     const [budgetName, setBudgetName] = useState('');
     const [clientName, setClientName] = useState('');
     const [budgetList, setBudgetList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     
     const addBudget = () => {
       const newBudget = {
@@ -200,14 +249,25 @@ const Calculadora = () =>  {
             </label>
             <button onClick={addBudget}>Agregar presupuesto</button>
           </FormContainer>
+          <label>
+      Buscar presupuesto:
+      <input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+    </label>
           <PresupuestosContainer>
             <h2>Listado de presupuestos</h2>
             <button onClick={sortAlphabetically}>Ordenar alfabéticamente</button>
   <button onClick={sortByDate}>Ordenar por fecha</button>
   <button onClick={resetOrder}>Reinicializar orden</button>
-            {budgetList.map((budget, index) => (
-              <BudgetItem key={index} budget={budget} />
-            ))}
+  {budgetList
+        .filter((budget) =>
+          budget.budgetName.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .map((budget, index) => (
+          <BudgetItem key={index} budget={budget} />
+        ))}
           </PresupuestosContainer>
         </CalculadoraContainer>
       </div>
