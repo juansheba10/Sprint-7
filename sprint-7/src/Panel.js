@@ -4,10 +4,14 @@ import CustomInput from './CustomInput';
 import InfoPopup from './InfoPopup';
 
 const PanelContainer = styled.div`
-  display: ${props => props.visible ? 'block' : 'none'};
+  display: ${props => props.visible ? 'flex' : 'none'};
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid #000;
+  border-radius: 10px;
 `;
 
 const InputWrapper = styled.div`
@@ -38,4 +42,3 @@ const Panel = ({ visible, numPaginas, numIdiomas, onNumPaginasChange, onNumIdiom
   };
 
 export default Panel;
-

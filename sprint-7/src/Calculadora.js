@@ -3,6 +3,31 @@ import React, { useState, useEffect } from 'react';
 import Panel from './Panel';
 import './App.css';
 import InfoPopup from './InfoPopup';
+import BudgetItem from './BudgetItem';
+import styled from 'styled-components';
+
+const CalculadoraContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+`;
+
+const FormContainer = styled.div`
+  flex: 1;
+`;
+
+const PresupuestosContainer = styled.div`
+  flex: 1;
+`;
+
+const PresupuestoItem = styled.div`
+  padding: 1rem;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+`;
+
 
 
 const Calculadora = () =>  {
@@ -13,8 +38,28 @@ const Calculadora = () =>  {
     const [panelVisible, setPanelVisible] = useState(false);
     const [numPaginas, setNumPaginas] = useState(1);
     const [numIdiomas, setNumIdiomas] = useState(1);
-  
-  
+    const [budgetName, setBudgetName] = useState('');
+    const [clientName, setClientName] = useState('');
+    const [budgetList, setBudgetList] = useState([]);
+    
+    const addBudget = () => {
+      const newBudget = {
+        budgetName,
+        clientName,
+        precioTotal,
+        services: {
+          web: precioWeb === 500,
+          seo: precioSEO === 250,
+          ads: precioAds === 200,
+        },
+        date: new Date(),
+      };
+    
+      setBudgetList([...budgetList, newBudget]);
+      setBudgetName('');
+      setClientName('');
+    };
+    
     const calcularPrecioTotal = () => {
       let costeWeb = 0; // Coste base de la página web
       if (panelVisible) {
@@ -63,6 +108,7 @@ const Calculadora = () =>  {
       };
       localStorage.setItem('estado', JSON.stringify(estado));
     };
+
     
   
     
@@ -88,27 +134,47 @@ const Calculadora = () =>  {
   
     return (
       <div className="App">
-          <p>
-            Precio total: {precioTotal}€
-          </p>
-          <label>
-            <input type="checkbox" checked={precioWeb === 500} onChange={modificarPrecioWeb}   /> Página web (500€)
-          </label>
-          <Panel
-    visible={panelVisible}
-    numPaginas={numPaginas}
-    numIdiomas={numIdiomas}
-    onNumPaginasChange={handleNumPaginasChange}
-    onNumIdiomasChange={handleNumIdiomasChange}
-  />
-          <label>
-            <input type="checkbox" checked={precioSEO === 250} onChange={modificarPrecioSEO} /> Consultoría SEO (250€)
-          </label>
-          <label>
-            <input type="checkbox" checked={precioAds === 200} onChange={modificarPrecioAds} /> Campaña de Google Ads (200€)
-          </label>
+        <CalculadoraContainer>
+          <FormContainer>
+            <p>
+              Precio total: {precioTotal}€
+            </p>
+            <label>
+              <input type="checkbox" checked={precioWeb === 500} onChange={modificarPrecioWeb} /> Página web (500€)
+            </label>
+            <Panel
+              visible={panelVisible}
+              numPaginas={numPaginas}
+              numIdiomas={numIdiomas}
+              onNumPaginasChange={handleNumPaginasChange}
+              onNumIdiomasChange={handleNumIdiomasChange}
+            />
+            <label>
+              <input type="checkbox" checked={precioSEO === 250} onChange={modificarPrecioSEO} /> Consultoría SEO (250€)
+            </label>
+            <label>
+              <input type="checkbox" checked={precioAds === 200} onChange={modificarPrecioAds} /> Campaña de Google Ads (200€)
+            </label>
+            <label>
+              Nombre del presupuesto:
+              <input value={budgetName} onChange={(e) => setBudgetName(e.target.value)} />
+            </label>
+            <label>
+              Cliente:
+              <input value={clientName} onChange={(e) => setClientName(e.target.value)} />
+            </label>
+            <button onClick={addBudget}>Agregar presupuesto</button>
+          </FormContainer>
+          <PresupuestosContainer>
+            <h2>Listado de presupuestos</h2>
+            {budgetList.map((budget, index) => (
+              <BudgetItem key={index} budget={budget} />
+            ))}
+          </PresupuestosContainer>
+        </CalculadoraContainer>
       </div>
     );
+    
   }
 
 export default Calculadora;
