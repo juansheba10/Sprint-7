@@ -52,13 +52,16 @@ const Calculadora = () =>  {
           seo: precioSEO === 250,
           ads: precioAds === 200,
         },
-        date: new Date(),
+        date: new Date().toISOString(),
       };
     
-      setBudgetList([...budgetList, newBudget]);
+      const updatedBudgetList = [...budgetList, newBudget];
+      setBudgetList(updatedBudgetList);
+      localStorage.setItem('budgetList', JSON.stringify(updatedBudgetList));
       setBudgetName('');
       setClientName('');
     };
+    
     
     const calcularPrecioTotal = () => {
       let costeWeb = 0; // Coste base de la página web
@@ -110,7 +113,27 @@ const Calculadora = () =>  {
     };
 
     
-  
+    const sortAlphabetically = () => {
+      const sortedBudgets = [...budgetList].sort((a, b) => a.budgetName.localeCompare(b.budgetName));
+      setBudgetList(sortedBudgets);
+    };
+    
+    const sortByDate = () => {
+      const sortedBudgets = [...budgetList].sort((a, b) => new Date(a.date) - new Date(b.date));
+      setBudgetList(sortedBudgets);
+    };
+    
+    const resetOrder = () => {
+      const storedBudgets = localStorage.getItem('budgetList');
+      const originalBudgets = storedBudgets
+        ? JSON.parse(storedBudgets).map((budget) => ({
+            ...budget,
+            date: new Date(budget.date),
+          }))
+        : [];
+      setBudgetList(originalBudgets);
+    };
+    
     
   
     // Llamamos a la función calcularPrecioTotal cada vez que se actualiza el estado de alguna de las casillas
@@ -130,6 +153,18 @@ const Calculadora = () =>  {
         setNumIdiomas(estado.numIdiomas);
       }
     }, []);
+
+    useEffect(() => {
+      const storedBudgets = localStorage.getItem('budgetList');
+      const originalBudgets = storedBudgets
+        ? JSON.parse(storedBudgets).map((budget) => ({
+            ...budget,
+            date: new Date(budget.date),
+          }))
+        : [];
+      setBudgetList(originalBudgets);
+    }, []);
+    
     
   
     return (
@@ -167,6 +202,9 @@ const Calculadora = () =>  {
           </FormContainer>
           <PresupuestosContainer>
             <h2>Listado de presupuestos</h2>
+            <button onClick={sortAlphabetically}>Ordenar alfabéticamente</button>
+  <button onClick={sortByDate}>Ordenar por fecha</button>
+  <button onClick={resetOrder}>Reinicializar orden</button>
             {budgetList.map((budget, index) => (
               <BudgetItem key={index} budget={budget} />
             ))}
