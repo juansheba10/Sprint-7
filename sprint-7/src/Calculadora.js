@@ -120,6 +120,34 @@ const Calculadora = () =>  {
       setBudgetList(originalBudgets);
     }, []);
     
+  
+    useEffect(() => {
+      const queryParams = new URLSearchParams();
+      if (precioWeb === 500) queryParams.set('web', 'true');
+      if (precioSEO === 250) queryParams.set('seo', 'true');
+      if (precioAds === 200) queryParams.set('ads', 'true');
+      queryParams.set('paginas', numPaginas);
+      queryParams.set('idiomas', numIdiomas);
+  
+      const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
+      window.history.replaceState({}, '', newUrl);
+    }, [precioWeb, precioSEO, precioAds, numPaginas, numIdiomas]);
+  
+    // Establecer el estado inicial de las opciones de presupuesto, páginas e idiomas basado en los Query Params
+    useEffect(() => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const web = queryParams.get('web') === 'true';
+      const paginas = queryParams.get('paginas');
+      const idiomas = queryParams.get('idiomas');
+      const seo = queryParams.get('seo') === 'true';
+      const ads = queryParams.get('ads') === 'true';
+      setPrecioWeb(web ? 500 : 0);
+      setPrecioSEO(seo ? 250 : 0);
+      setPrecioAds(ads ? 200 : 0);
+      if (paginas) setNumPaginas(parseInt(paginas, 10));
+      if (idiomas) setNumIdiomas(parseInt(idiomas, 10));
+    }, []);
+    
 
     const calcularPrecioTotal = () => {
       let costeWeb = 0; // Coste base de la página web
